@@ -3,6 +3,7 @@
 data/audios/*
 data/fragments/*
 data/transcripts/*
+data/summaries/*
 videos/*.mp4
 .idea
 __pycache__/
