@@ -21,5 +21,6 @@ WHISPER_MODELS = ["tiny", "base", "small", "medium", "large"]
 if WHISPER_MODEL not in WHISPER_MODELS:
     raise ValueError(f"WHISPER_MODEL debe ser uno de: {', '.join(WHISPER_MODELS)}")
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")  # Clave de API de OpenAI
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", False)  # Clave de API de OpenAI
 USE_OPENAI_API = bool(OPENAI_API_KEY)  # Usar OpenAI solo si la clave está configurada
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo")

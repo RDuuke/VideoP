@@ -51,11 +51,34 @@ Este proyecto es ideal para trabajar con videos largos, extraer su contenido en 
    - El modelo de Whisper se descargará automáticamente la primera vez que ejecutes el proyecto.
    - Puedes cambiar el modelo en `config.py` (opciones: tiny, base, small, medium, large).
 3. **Uso de OpenAI API (opcional):**
-    - Si deseas usar la API de OpenAI para generar resúmenes, configura tu clave de API en `config.py`:
-       ````python
-       OPENAI_API_KEY = "tu_clave_de_api"
-       USE_OPENAI_API = True
-       ````
+   1. **Obtén una clave de API**:
+      - Regístrate en [OpenAI](https://platform.openai.com/signup/) y obtén tu clave de API.
+      - La clave de API es necesaria para autenticar las solicitudes a la API de OpenAI.
+
+   2. **Configura la clave de API**:
+      - Abre el archivo `config.py` y agrega tu clave de API:
+      ```python
+      OPENAI_API_KEY = "tu_clave_de_api"
+      USE_OPENAI_API = True
+      ```
+   3. **Instala la última versión de la biblioteca `openai`**:
+      - Asegúrate de tener instalada la última versión de la biblioteca `openai`:
+        ```bash
+        pip install --upgrade openai
+        ```
+   4. **Modelos Disponibles**:
+      - Puedes utilizar modelos como `gpt-3.5-turbo` o `gpt-4` para generar resúmenes o mejorar las transcripciones.
+      - Cambia el modelo en `config.py` si es necesario:
+        ```python
+        OPENAI_MODEL = "gpt-3.5-turbo"  # Opciones: "gpt-3.5-turbo", "gpt-4", etc.
+        ```
+   5. **Ejemplo de Uso**:
+      - Si `USE_OPENAI_API` está habilitado, el programa utilizará la API de OpenAI para generar resúmenes a partir de las transcripciones.
+      - Asegúrate de tener conexión a Internet, ya que las solicitudes se envían a los servidores de OpenAI.
+
+   6. **Costos**:
+      - El uso de la API de OpenAI tiene un costo asociado. Consulta los precios en la [página de precios de OpenAI](https://openai.com/pricing).
+      - Asegúrate de monitorear tu uso para evitar cargos inesperados.
 
 ## Uso
 1. **Ejecuta el programa:**

@@ -1,8 +1,11 @@
 import logging
 from pathlib import Path
 from fpdf import FPDF
+from openai import OpenAI
 
-from config import USE_OPENAI_API, SUMMARY_DIR
+from config import USE_OPENAI_API, SUMMARY_DIR, OPENAI_MODEL, OPENAI_API_KEY
+
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -28,15 +31,17 @@ def summary_generate(transcription: str, session_name: str) -> str:
         return
 
     if USE_OPENAI_API:
-        import openai
-        openai.api_key = "tu_api_key"  # Asegúrate de configurar tu API key
         try:
-            response = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=f"Resume el siguiente texto:\n{summary}",
-                max_tokens=150
+            response = client.chat.completions.create(
+                model=OPENAI_MODEL,
+                messages=[
+                    {"role": "system", "content": "Eres un asistente útil que resume textos."},
+                    {"role": "user", "content": f"Resume el siguiente texto:\n{summary}"}
+                ],
+                max_tokens=350  # Limita la longitud del resumen
             )
-            summary = response.choices[0].text.strip()
+
+            summary = response.choices[0].message.content.strip()
         except Exception as e:
             logger.error(f"❌ Error al generar el resumen con OpenAI: {e}")
             return
