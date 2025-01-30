@@ -27,6 +27,6 @@ def splitter(video_path: str, session_name:str, fragment_duration:int = 500) -> 
             continue
 
         cmd_split = f'ffmpeg -i "{video_path}" -ss {start_time} -t {fragment_duration} -c copy "{fragment_output}"'
-        subprocess.run(cmd_split, shell=True)
+        subprocess.run(cmd_split, shell=True, stderr=subprocess.DEVNULL)
 
     return fragment_path

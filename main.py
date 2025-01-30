@@ -30,8 +30,6 @@ def main():
 
     session_name = os.path.splitext(os.path.basename(video_path))[0]
 
-    print(session_name, video_path)
-
     fragment_path = splitter(video_path=video_path, session_name=session_name)
 
 if __name__ == "__main__":
