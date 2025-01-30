@@ -1,5 +1,5 @@
-import glob
-import os.path
+import logging
+from pathlib import Path
 from typing import Optional
 
 from config import VIDEO_DIR
@@ -8,36 +8,71 @@ from scripts.splitter import splitter
 from scripts.transcriber import transcriber_audio
 from scripts.summarizer import summary_generate
 
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+logger = logging.getLogger(__name__)
 
-def selected_video()-> Optional[str]:
-
-    video_files = glob.glob(os.path.join(VIDEO_DIR, '*.mp4'))
+def selected_video() -> Optional[str]:
+    video_files = list(Path(VIDEO_DIR).glob("*.mp4"))
 
     if not video_files:
-        print("❌ No hay videos en la carpeta 'videos/'. Agrega un archivo MP4 para procesar.")
+        logger.error("❌ No hay videos en la carpeta 'videos/'. Agrega un archivo MP4 para procesar.")
         return None
 
-    print("\n📂 Videos disponibles para procesar:")
+    logger.info("📂 Videos disponibles para procesar:")
     for ids, file in enumerate(video_files):
-        print(f"{ids}. {os.path.basename(file)}")
+        logger.info(f"{ids + 1}. {file.name}")
 
-    selected_index = int(input("\n🔹 Ingresa el número del video que deseas procesar: ")) - 1
-
-    return video_files[selected_index]
-
+    try:
+        selected_index = int(input("\n🔹 Ingresa el número del video que deseas procesar: ")) - 1
+        if selected_index < 0 or selected_index >= len(video_files):
+            logger.error("❌  Índice inválido. Por favor, selecciona un número dentro del rango.")
+            return None
+        return str(video_files[selected_index])
+    except ValueError:
+        logger.error("❌ Entrada inválida. Por favor, ingresa un número válido.")
+        return None
 
 def main():
-    video_path = selected_video()
-    if not video_path:
-        return
+    while True:
+        print("\n🔹 Menú Principal:")
+        print("1. Procesar un video")
+        print("2. Salir")
+        choice = input("Selecciona una opción: ")
 
-    session_name = os.path.splitext(os.path.basename(video_path))[0]
+        if choice == "1":
+            video_path = selected_video()
+            if not video_path:
+                continue
 
-    fragment_path = splitter(video_path=video_path, session_name=session_name)
-    audio_path = converter_to_wav(fragment_path=fragment_path, session_name=session_name)
-    transcription_path = transcriber_audio(audio_path=audio_path, session_name=session_name)
-    summary_generate(transcription=transcription_path, session_name=session_name)
+            session_name = Path(video_path).stem
 
+            fragment_files = splitter(video_path=video_path, session_name=session_name)
+            if not fragment_files:
+                logger.error("❌  Error al dividir el video.")
+                continue
+
+            audio_files = converter_to_wav(fragment_files=fragment_files, session_name=session_name)
+            if not audio_files:
+                logger.error("❌ Error al convertir el video a audio.")
+                continue
+
+            transcription_path = transcriber_audio(audio_files=audio_files, session_name=session_name)
+            if not transcription_path:
+                logger.error("❌ Error al transcribir el audio.")
+                continue
+
+            summary_file = summary_generate(transcription=transcription_path, session_name=session_name)
+            if not summary_file:
+                logger.error("❌ Error al generar el resumen.")
+                continue
+
+            logger.info(f"✅  Proceso completado. Resumen guardado en: {summary_file}")
+
+        elif choice == "2":
+            logger.info("👋 Saliendo del programa...")
+            break
+        else:
+            logger.error("❌ Opción inválida. Por favor, selecciona una opción válida.")
 
 if __name__ == "__main__":
     main()

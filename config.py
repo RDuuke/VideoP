@@ -1,22 +1,25 @@
 import os
+from pathlib import Path
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE_DIR, 'data')
-VIDEO_DIR = os.path.join(BASE_DIR, 'videos')
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / 'data'  # Directorio para almacenar datos generados
+VIDEO_DIR = BASE_DIR / 'videos'  # Directorio para almacenar videos de entrada
 
-FRAGMENTS_DIR = os.path.join(DATA_DIR, 'fragments')
-AUDIO_DIR = os.path.join(DATA_DIR, 'audios')
-TRANSCRIPTS_DIR = os.path.join(DATA_DIR, 'transcripts')
-SUMMARY_DIR = os.path.join(DATA_DIR, 'summaries')
+FRAGMENTS_DIR = DATA_DIR / 'fragments'  # Fragmentos de video
+AUDIO_DIR = DATA_DIR / 'audios'  # Archivos de audio convertidos
+TRANSCRIPTS_DIR = DATA_DIR / 'transcripts'  # Transcripciones de audio
+SUMMARY_DIR = DATA_DIR / 'summaries'  # Resúmenes generados
 
-WHISPER_CACHE_DIR = os.path.expanduser("~/.cache/whisper")
-WHISPER_MODEL = "base"  # Opciones: "tiny", "base", "small", "medium", "large"
-WHISPER_LANGUAGE = "es"  # Idioma forzado en español
+for folder in [FRAGMENTS_DIR, AUDIO_DIR, TRANSCRIPTS_DIR, SUMMARY_DIR]:
+    folder.mkdir(parents=True, exist_ok=True)
 
-for folder in [FRAGMENTS_DIR]:
-    os.makedirs(folder, exist_ok=True)
+WHISPER_CACHE_DIR = Path.home() / ".cache" / "whisper"  # Directorio de caché para Whisper
+WHISPER_MODEL = os.getenv("WHISPER_MODEL", "base")  # Modelo de Whisper, por defecto "base"
+WHISPER_LANGUAGE = os.getenv("WHISPER_LANGUAGE", "es")  # Idioma, por defecto español
 
-USE_OPENAI_API = False
+WHISPER_MODELS = ["tiny", "base", "small", "medium", "large"]
+if WHISPER_MODEL not in WHISPER_MODELS:
+    raise ValueError(f"WHISPER_MODEL debe ser uno de: {', '.join(WHISPER_MODELS)}")
 
-
-
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")  # Clave de API de OpenAI
+USE_OPENAI_API = bool(OPENAI_API_KEY)  # Usar OpenAI solo si la clave está configurada
