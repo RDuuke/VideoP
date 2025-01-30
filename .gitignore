@@ -1,0 +1,6 @@
+.venv
+data/audios/*.mp3
+data/fragments/*.wav
+data/transcripts/*.txt
+videos/*.mp4
+.idea
