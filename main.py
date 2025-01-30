@@ -3,6 +3,7 @@ import os.path
 from typing import Optional, List
 
 from config import VIDEO_DIR
+from scripts.converter import converter_to_wav
 from scripts.splitter import splitter
 
 
@@ -31,6 +32,8 @@ def main():
     session_name = os.path.splitext(os.path.basename(video_path))[0]
 
     fragment_path = splitter(video_path=video_path, session_name=session_name)
+    audio_path = converter_to_wav(fragment_path=fragment_path, session_name=session_name)
+
 
 if __name__ == "__main__":
     main()

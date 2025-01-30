@@ -1,5 +1,5 @@
 .venv
-data/audios/*.wav
+data/audios/*
 data/fragments/*
 data/transcripts/*.txt
 videos/*.mp4
