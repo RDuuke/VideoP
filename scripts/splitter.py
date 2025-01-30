@@ -8,10 +8,17 @@ def splitter(video_path: str, session_name:str, fragment_duration:int = 500) -> 
     fragment_path = os.path.join(FRAGMENTS_DIR, session_name)
     os.makedirs(fragment_path, exist_ok=True)
 
-    cmd_duration = f'ffmpeg -i "{video_path}" 2>&1 | findstr "Duration"'
+    result = subprocess.run(
+        ["ffmpeg", "-i", video_path],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+    )
 
-    result = subprocess.run(cmd_duration, shell=True, capture_output=True, text=True)
-    duration_str = result.stdout.split("Duration: ")[1].split(",")[0]
+    output = result.stderr
+
+    for line in output.split("\n"):
+        if "Duration: " in line:
+            duration_str = line.split("Duration: ")[1].split(",")[0].strip()
+
     h, m, s = map(float, duration_str.split(":"))
     total_seconds = int(h * 3600 + m * 60 + s)
 

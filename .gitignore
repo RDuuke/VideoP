@@ -1,7 +1,8 @@
 .venv
+.wvenv
 data/audios/*
 data/fragments/*
-data/transcripts/*.txt
+data/transcripts/*
 videos/*.mp4
 .idea
 __pycache__/
