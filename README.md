@@ -1,19 +1,20 @@
 # VideoP - Procesamiento de Videos, Transcripción y Resumen Automático
+
 **VideoP** es una herramienta en Python diseñada para procesar videos, dividirlos en fragmentos, convertirlos a audio, transcribirlos y generar resúmenes automáticos. 
 Este proyecto es ideal para trabajar con videos largos, extraer su contenido en texto y obtener resúmenes concisos.
----
+
 ## Características Principales
 - **División de videos:** Divide videos largos en fragmentos más pequeños.
 - **Conversión a audio:** Convierte los fragmentos de video a archivos de audio en formato WAV.
 - **Transcripción automática:** Utiliza el modelo Whisper de OpenAI para transcribir los archivos de audio a texto.
 - **Generación de resúmenes:** Crea resúmenes en formato PDF a partir de las transcripciones.
 - **Configuración flexible:** Permite personalizar la duración de los fragmentos, el modelo de transcripción y más.
----
+
 ## Requisitos del Sistema
 - Python 3.8 o superior.
 - FFmpeg instalado y disponible en el sistema.
 - Dependencias de Python instaladas (ver requirements.txt).
----
+
 ## Instalación
 
 1. **Clona Repositorio:**
@@ -41,7 +42,7 @@ Este proyecto es ideal para trabajar con videos largos, extraer su contenido en 
      brew install ffmpeg
      ```
    - En Windows: Descarga FFmpeg desde [ffmpeg.org](ffmpeg.org) y agrega la ruta de `ffmpeg.exe` a las variables de entorno del sistema.
----
+
 ## Configuración
 1. **Estructura del Proyecto:**
    - Coloca tus videos en la carpeta `videos/`.
@@ -49,13 +50,13 @@ Este proyecto es ideal para trabajar con videos largos, extraer su contenido en 
 2. **Configuración de Whisper:**
    - El modelo de Whisper se descargará automáticamente la primera vez que ejecutes el proyecto.
    - Puedes cambiar el modelo en `config.py` (opciones: tiny, base, small, medium, large).
-   3. **Uso de OpenAI API (opcional):**
-      - Si deseas usar la API de OpenAI para generar resúmenes, configura tu clave de API en `config.py`:
-   ````python
-   OPENAI_API_KEY = "tu_clave_de_api"
-   USE_OPENAI_API = True
-   ````
----
+3. **Uso de OpenAI API (opcional):**
+    - Si deseas usar la API de OpenAI para generar resúmenes, configura tu clave de API en `config.py`:
+       ````python
+       OPENAI_API_KEY = "tu_clave_de_api"
+       USE_OPENAI_API = True
+       ````
+
 ## Uso
 1. **Ejecuta el programa:**
     ````bash
@@ -74,7 +75,7 @@ Este proyecto es ideal para trabajar con videos largos, extraer su contenido en 
    - Los archivos de audio se guardan en `data/audios/`.
    - Las transcripciones se guardan en `data/transcripts/`.
    - El resumen se guarda en `data/summaries/`.
----
+
 ## Estructura del Proyecto
 ```
 VideoP/
@@ -94,9 +95,9 @@ VideoP/
 ## Dependencias
 Las dependencias del proyecto se encuentran en requirements.txt. Para instalarlas, ejecuta:
 ````bash
-    pip install -r requirements.txt
+pip install -r requirements.txt
 ````
----
+
 ## Contribuciones
 ¡Las contribuciones son bienvenidas! Si deseas mejorar este proyecto, sigue estos pasos:
 1. Haz un fork del repositorio.
@@ -104,12 +105,12 @@ Las dependencias del proyecto se encuentran en requirements.txt. Para instalarla
 3. Haz commit de tus cambios (``git commit -m 'Añadir nueva funcionalidad'``).
 4. Haz push a la rama (``git push origin feature/nueva-funcionalidad``).
 5. Abre un Pull Request.
----
+
 ## Notas Adicionales
 - Asegúrate de que los videos estén en formato MP4.
 - El proceso puede tardar varios minutos dependiendo del tamaño del video y el modelo de Whisper utilizado.
 - Si encuentras algún problema, abre un issue en el repositorio.
----
+
 
 
 
