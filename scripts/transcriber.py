@@ -64,5 +64,5 @@ def transcriber_audio(
             with open(file, "r", encoding="utf-8") as f_in:
                 f_out.write(f_in.read() + "\n")
 
-    logger.info("📜  Transcripción de todos los fragmentos completada.")
+    logger.info("📜 Transcripción de todos los fragmentos completada.")
     return str(full_transcription_file)

@@ -56,7 +56,7 @@ def splitter(
     logger.info(f"📹 Dividiendo {video_path} en {num_fragments} fragmentos de {fragment_duration} segundos.")
 
     fragment_files = []
-    for i in tqdm(range(num_fragments), desc=f"⏳  Creando fragmentos: "):
+    for i in tqdm(range(num_fragments), desc=f"⏳   Creando fragmentos: "):
         start_time = i * fragment_duration
         fragment_output = fragment_path / f"fragmento_{i + 1}.mp4"
 

@@ -19,7 +19,7 @@ def converter_to_wav(fragment_files: list, session_name: str) -> list:
 
     audio_files = []  # Lista para almacenar las rutas de los archivos de audio generados
 
-    for fragment_file in tqdm(fragment_files, desc=f"⏳  Convirtiendo a WAV: "):
+    for fragment_file in tqdm(fragment_files, desc=f"⏳   Convirtiendo a WAV: "):
         fragment_file = Path(fragment_file)
         wav_file = audio_path / fragment_file.name.replace(".mp4", ".wav")
 

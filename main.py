@@ -73,7 +73,7 @@ def main():
             elapsed_time = end_time - start_time
 
             logger.info(f"✅  Proceso completado. Resumen guardado en: {summary_file}")
-            logger.info(f"⏱️  Tiempo total de ejecución: {elapsed_time:.2f} segundos.")
+            logger.info(f"⏱️ Tiempo total de ejecución: {elapsed_time:.2f} segundos.")
 
         elif choice == "2":
             logger.info("👋 Saliendo del programa...")
