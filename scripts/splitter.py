@@ -1,7 +1,7 @@
 import logging
+from tqdm import tqdm
 from pathlib import Path
 import subprocess
-
 from config import FRAGMENTS_DIR
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -25,9 +25,8 @@ def splitter(
     fragment_path = Path(FRAGMENTS_DIR) / session_name
     fragment_path.mkdir(parents=True, exist_ok=True)
 
-    for existing_fragment in fragment_path.glob("*.mp4"):
+    for existing_fragment in tqdm(list(fragment_path.glob("*.mp4")), desc=f"🗑️ Eliminando fragmentos: "):
         existing_fragment.unlink()
-        logger.info(f"🗑️Fragmento existente eliminado: {existing_fragment}")
 
     try:
         result = subprocess.run(
@@ -57,7 +56,7 @@ def splitter(
     logger.info(f"📹 Dividiendo {video_path} en {num_fragments} fragmentos de {fragment_duration} segundos.")
 
     fragment_files = []
-    for i in range(num_fragments):
+    for i in tqdm(range(num_fragments), desc=f"⏳  Creando fragmentos: "):
         start_time = i * fragment_duration
         fragment_output = fragment_path / f"fragmento_{i + 1}.mp4"
 
@@ -72,7 +71,6 @@ def splitter(
 
         try:
             subprocess.run(cmd_split, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
-            logger.info(f"✅  Fragmento {i + 1} creado: {fragment_output}")
             fragment_files.append(str(fragment_output))
         except subprocess.CalledProcessError as e:
             logger.error(f"❌  Error al crear el fragmento {i + 1}: {e.stderr.decode('utf-8')}")

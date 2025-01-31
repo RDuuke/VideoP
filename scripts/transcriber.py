@@ -1,10 +1,14 @@
 import logging
-from pathlib import Path
 import whisper
-
+import warnings
+from pathlib import Path
+from tqdm import tqdm
 from config import TRANSCRIPTS_DIR, WHISPER_MODEL, WHISPER_CACHE_DIR
 
+warnings.filterwarnings("ignore", message="FP16 is not supported on CPU; using FP32 instead")
+
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
 logger = logging.getLogger(__name__)
 
 def model_exists(model_name: str) -> bool:
@@ -30,13 +34,12 @@ def transcriber_audio(
     transcription_path = Path(TRANSCRIPTS_DIR) / session_name
     transcription_path.mkdir(parents=True, exist_ok=True)
 
-    for existing_transcription in transcription_path.glob("*.txt"):
+    for existing_transcription in tqdm(list(transcription_path.glob("*.txt")), desc=f"🗑️ Eliminando transcripciones: "):
         existing_transcription.unlink()
-        logger.info(f"🗑️Transcripción existente eliminado: {existing_transcription}")
 
     transcript_files = []
 
-    for audio_file in audio_files:
+    for audio_file in tqdm(audio_files, desc=f"⏳  Creando transcripciones: "):
         audio_file = Path(audio_file)
         transcription_file = transcription_path / audio_file.name.replace(".wav", ".txt")
 
@@ -44,14 +47,12 @@ def transcriber_audio(
             logger.warning(f"⚠️ {transcription_file} ya existe, saltando...")
             continue
 
-        logger.info(f"⏳  Transcribiendo {audio_file.name}...")
         try:
             result = model.transcribe(str(audio_file), word_timestamps=word_timestamps, language=language)
             transcript_text = f"\n=== {audio_file.name} ===\n" + result["text"]
 
             with open(transcription_file, "w", encoding="utf-8") as f:
                 f.write(transcript_text)
-            logger.info(f"✅  Transcripción guardada en: {transcription_file}")
             transcript_files.append(str(transcription_file))
         except Exception as e:
             logger.error(f"❌  Error al transcribir {audio_file.name}: {e}")

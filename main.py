@@ -1,6 +1,8 @@
 import logging
+import time
 from pathlib import Path
 from typing import Optional
+from tqdm import tqdm
 
 from config import VIDEO_DIR
 from scripts.converter import converter_to_wav
@@ -40,6 +42,7 @@ def main():
         choice = input("Selecciona una opción: ")
 
         if choice == "1":
+            start_time = time.time()
             video_path = selected_video()
             if not video_path:
                 continue
@@ -66,7 +69,11 @@ def main():
                 logger.error("❌ Error al generar el resumen.")
                 continue
 
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+
             logger.info(f"✅  Proceso completado. Resumen guardado en: {summary_file}")
+            logger.info(f"⏱️  Tiempo total de ejecución: {elapsed_time:.2f} segundos.")
 
         elif choice == "2":
             logger.info("👋 Saliendo del programa...")

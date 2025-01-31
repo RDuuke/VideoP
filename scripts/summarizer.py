@@ -60,7 +60,11 @@ def summary_generate(transcription: str, session_name: str) -> str:
     pdf.set_font("Arial", size=16, style="B")
     pdf.cell(0, 10, "Resumen de la Transcripción", ln=True, align="C")
     pdf.set_font("Arial", size=12)
-    pdf.multi_cell(0, 10, summary)
+    try:
+        pdf.multi_cell(0, 10, summary.encode("latin-1", "replace").decode("latin-1"))
+    except UnicodeEncodeError:
+        pdf.multi_cell(0, 10, summary.encode("utf-8").decode("latin-1", "ignore"))
+
     pdf.output(str(summary_file))
 
     logger.info(f"✅  Resumen guardado en: {summary_file}")
