@@ -34,7 +34,7 @@ def transcriber_audio(
     transcription_path = Path(TRANSCRIPTS_DIR) / session_name
     transcription_path.mkdir(parents=True, exist_ok=True)
 
-    for existing_transcription in tqdm(list(transcription_path.glob("*.txt")), desc=f"🗑️ Eliminando transcripciones: "):
+    for existing_transcription in tqdm(list(transcription_path.glob("*.txt")), desc=f"🗑️ Eliminando transcripciones: ", unit="archivo", colour="green", ncols=100):
         existing_transcription.unlink()
 
     transcript_files = []

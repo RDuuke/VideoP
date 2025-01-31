@@ -25,7 +25,7 @@ def splitter(
     fragment_path = Path(FRAGMENTS_DIR) / session_name
     fragment_path.mkdir(parents=True, exist_ok=True)
 
-    for existing_fragment in tqdm(list(fragment_path.glob("*.mp4")), desc=f"🗑️ Eliminando fragmentos: "):
+    for existing_fragment in tqdm(list(fragment_path.glob("*.mp4")), desc=f"🗑️ Eliminando fragmentos: ", unit="archivo", colour="green", ncols=100):
         existing_fragment.unlink()
 
     try:

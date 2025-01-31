@@ -12,7 +12,7 @@ def converter_to_wav(fragment_files: list, session_name: str) -> list:
     audio_path = Path(AUDIO_DIR) / session_name
     audio_path.mkdir(parents=True, exist_ok=True)
 
-    for existing_audio in tqdm(list(audio_path.glob("*.wav")), desc=f"🗑️ Eliminando Audios: "):
+    for existing_audio in tqdm(list(audio_path.glob("*.wav")), desc=f"🗑️ Eliminando audios: ", unit="archivo", colour="green", ncols=100):
         existing_audio.unlink()
 
     logger.info("🎧 Iniciando conversión de MP4 a WAV...")
