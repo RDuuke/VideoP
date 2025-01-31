@@ -67,5 +67,4 @@ def summary_generate(transcription: str, session_name: str) -> str:
 
     pdf.output(str(summary_file))
 
-    logger.info(f"✅  Resumen guardado en: {summary_file}")
     return str(summary_file)
